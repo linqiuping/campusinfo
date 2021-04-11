@@ -1,39 +1,59 @@
 package com.example.campusinfo.service;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
+import java.net.URLConnection;
 
 
 @Service
 public class DownloadingWebpage {
     public  String getContentFormPage(String urlStr)throws Throwable{
         URL url = new URL(urlStr);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-        String content="";
-        String line;
-        while ((line = reader.readLine()) != null) {
-            content+=line;
+        URLConnection con  = url.openConnection();
+
+        InputStream in = con.getInputStream();
+
+        BufferedInputStream bin = new BufferedInputStream(in);
+
+        byte[] buffer = new byte[1024];
+
+        int len = 0;
+
+        StringBuilder builder = new StringBuilder();
+
+        while(-1 != (len = bin.read(buffer))){
+            builder.append(new String(buffer,0,len));
+
         }
-        reader.close();
-        return content;
-    }
-//    public static void main(String[] args) throws Exception {
-//        URL url = new URL("http://zjut.jysd.com/job/search?d_category=0");
+
+        System.out.println(builder);
 //        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-//        BufferedWriter writer = new BufferedWriter(new FileWriter("save2yiibai-index.html"));
+//        String content="";
 //        String line;
-//
 //        while ((line = reader.readLine()) != null) {
-//            System.out.println(line);
-//            writer.write(line);
-//            writer.newLine();
+//            content+=line;
 //        }
 //        reader.close();
-//        writer.close();
-//    }
+        return builder.toString();
+    }
+
+    public String getPageContentBySelenium( String url){
+        System.setProperty("webdriver.chrome.driver","/Users/linqiuping/dev/campusinfo/mac/chromedriver");
+        // 的是FirefoxDriver的驱动
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.setHeadless(Boolean.TRUE);
+        chromeOptions.addArguments("--no-sandbox");
+        chromeOptions.addArguments("--no-headless");
+        WebDriver driver = new ChromeDriver(chromeOptions); // 新建一个WebDriver 的对象，但是new
+        driver.get(url);// 打开指定的网站
+        String content=driver.getPageSource();
+        driver.close();
+        return content;
+    }
 }

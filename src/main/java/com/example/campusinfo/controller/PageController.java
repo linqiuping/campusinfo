@@ -1,11 +1,14 @@
 package com.example.campusinfo.controller;
 
+import com.example.campusinfo.Job;
 import com.example.campusinfo.service.DownloadingWebpage;
 import com.example.campusinfo.service.ResolveWebPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 爬虫控制器
@@ -42,6 +45,41 @@ public class PageController {
             return "get title error";
         }
 
+    }
+
+    @RequestMapping("getWebJobTable")
+    public  String getWebJobTable(@RequestParam String  url) {
+        try {
+            String content = downloadingWebpage.getPageContentBySelenium(url);
+            String jobTable = resolveWebPage.getTable(content);
+            return jobTable;
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            return "get job table error";
+
+        }
+    }
+
+    @RequestMapping("getJobList")
+    public List<Job> getJobList(@RequestParam String  url) {
+        try {
+            String content = downloadingWebpage.getPageContentBySelenium(url);
+            return resolveWebPage.getJobList(content);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            return null;
+        }
+    }
+
+    @RequestMapping("getDivContent")
+    public  String getDivContent(@RequestParam String  url) {
+        try {
+            return downloadingWebpage.getPageContentBySelenium(url);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            return "get job table error";
+
+        }
     }
 
 }
