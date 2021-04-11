@@ -1,12 +1,31 @@
-package com.example.campusinfo;
+package com.example.campusinfo.unit;
 
+
+import javax.persistence.*;
+
+@Entity
+@Table(name ="job")
 public class Job {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
+
     String name;
     String jobUrl;
     String publishTime;
     String salary;
     String address;
+
+    public int getSchool_type() {
+        return school_type;
+    }
+
+    public void setSchool_type(int school_type) {
+        this.school_type = school_type;
+    }
+
+    int school_type;
 
     public long getId() {
         return id;

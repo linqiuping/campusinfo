@@ -1,11 +1,13 @@
 package com.example.campusinfo.service;
 
-import com.example.campusinfo.Job;
+import com.example.campusinfo.repository.JobRepository;
+import com.example.campusinfo.unit.Constant;
+import com.example.campusinfo.unit.Job;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.scheduling.support.SimpleTriggerContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +15,9 @@ import java.util.List;
 
 @Service
 public class ResolveWebPage {
+
+    @Autowired
+    JobRepository jobRepository;
 
     public String getTitle(String content){
         Document document = Jsoup.parse(content);
@@ -60,6 +65,8 @@ public class ResolveWebPage {
                 Element salaryElement=jobElement.getElementsByClass("salary").first();
 //                job.setSalary(salaryElement.getElementsByClass("p").first().text());
 //                job.setAddress(salaryElement.getElementsByClass("ul").text());
+                jobRepository.save(job);
+                job.setSchool_type(Constant.school_type_zjut);
                 list.add(job);
             }catch (Throwable throwable){
                 System.out.println("error:"+e.html());
