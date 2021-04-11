@@ -12,6 +12,11 @@ public class CrawlerController {
 
     @RequestMapping("sayhi")
     public String  sayHi(){
-        return "hello";
+        return "hi";
+    }
+
+    @RequestMapping("sayHello")
+    public String  sayHello(){
+        return "hello wenlong";
     }
 }
