@@ -1,6 +1,8 @@
 package com.example.campusinfo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -10,10 +12,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/page/")
 public class PageController {
 
-    @RequestMapping("downloadWebpage")
-    public String  downloadWebpage(){
+    @Autowired
+    DownloadingWebpage downloadingWebpage;
 
-        return "hi";
+    @RequestMapping("downloadWebpage")
+    public String  downloadWebpage(@RequestParam String url){
+        try {
+            return downloadingWebpage.getContentFormPage(url);
+        }catch (Throwable throwable){
+            throwable.printStackTrace();
+            return "url error";
+        }
+
     }
 
 }
