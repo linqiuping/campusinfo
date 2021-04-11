@@ -1,4 +1,4 @@
-package com.example.campusinfo.controller;
+package com.example.campusinfo.service;
 
 import org.springframework.stereotype.Service;
 
@@ -14,17 +14,12 @@ public class DownloadingWebpage {
     public  String getContentFormPage(String urlStr)throws Throwable{
         URL url = new URL(urlStr);
         BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-        BufferedWriter writer = new BufferedWriter(new FileWriter("save2yiibai-index.html"));
         String content="";
         String line;
         while ((line = reader.readLine()) != null) {
-            System.out.println(line);
-            writer.write(line);
-            writer.newLine();
             content+=line;
         }
         reader.close();
-        writer.close();
         return content;
     }
 //    public static void main(String[] args) throws Exception {
